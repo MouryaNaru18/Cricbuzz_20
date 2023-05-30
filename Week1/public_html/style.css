@@ -1,0 +1,60 @@
+p{
+    font-size:18px;
+}
+#logo{
+    font-size:x-large; 
+    font-weight: 1000;
+}
+.toshow{
+    display:none;
+}
+body{
+    height: 100%;
+    background-image: url('backgroundimg-1.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: antiquewhite;
+    font-family:Verdana, Geneva, Tahoma, sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+h1{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 50px;
+    text-align: center;
+    color: rgb(50, 0, 100);
+}
+table{
+    font-size: 20px;
+    column-width: 100px;
+    text-align: center;
+    align-content: center;
+    /* vertical-align: middle; */
+    font-family:Georgia, 'Times New Roman', Times, serif
+}
+label{
+    font-size: 18px;
+}
+.fa {
+    padding: 20px;
+    font-size:50px;
+    width: 50px;
+    text-align: center;
+    text-decoration: none;
+  }
+.fa:hover {
+    opacity: 0.75;
+}
+.my-btn{
+    font-size: 18px;
+    font-weight: 400;
+    
+}
+th{
+    
+    font-weight:500;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+#contact{
+    color: rgb(240, 142, 5);
+}
+

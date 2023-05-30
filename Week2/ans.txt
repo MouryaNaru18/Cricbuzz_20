@@ -1,0 +1,29 @@
+QUERIES:
+
+UNIVERSITY: 
+
+1. select name from student union select name from instructor;
+2. select c.course_id, title, id from course c inner join teaches t on c.course_id=t.course_id;
+3. select id,name,salary from instructor where salary < 75000;
+4. select dept_name,count(*) from instructor group by dept_name;
+5. select c.course_id, title, prereq_id from course c inner join prereq p on c.course_id=p.course_id;
+6. select name, salary from instructor i where i.salary > 0.1*(select budget from department d where d.dept_name=i.dept_name);
+7. select dept_name from department where building in(select building from (select building, count(*) c from department group by building) as foo where foo.c > 1);
+8. select dept_name, 5000*count(*) income from student group by dept_name;
+9. select id from instructor where id not in(select i_id from advisor union select id from teaches);
+10. select id from takes where course_id like 'CS%' intersect select id from takes where course_id like 'BIO%'; 
+11. select name, id from student where tot_cred > 30;
+12. select id, name, i.dept_name, building from instructor i left outer join department d on i.dept_name=d.dept_name;
+13. select course_id, count(distinct id) from takes group by course_id;
+14. select id from takes where course_id in('CS-101', 'CS-190');
+15. select count(*) from takes t where t.course_id in(select T.course_id from teaches T where T.id = '22222');
+
+MOVIES:
+1. select title from movies where movieid in(select movieid from ratings group by movieid having max(rating) >= (select max(rating) from ratings where movieid in(select movieid from tags where upper(tag) = upper('Quentin Tarantino')))) and genres ilike '%Drama%';
+2. select userid from ratings where movieid in(select movieid from movies where genres ilike '%Comedy') group by userid having max(rating)<=3;
+3. select ratings_master.rating, count(r.userid) AS user_count from generate_series(0.0, 5.0, 0.5) AS ratings_master(rating) left join ratings AS r on r.movieid=(select movieid from movies where title='City Hall (1996)') and r.rating=ratings_master.rating group by ratings_master.rating order by ratings_master.rating;
+-- Did not get the upper one
+4. select movieid,title,unnest(string_to_array(genres, '|')) as genres from movies union all select movieid,title,unnest(string_to_array(genres, '|')) as genres from movies;
+-- Did not get the upper one
+5.  with norm_movie as (select movieid,title,unnest(string_to_array(genres, '|')) as genres from movies union all select movieid,title,unnest(string_to_array(genres, '|')) as genres from movies) select genres, count(distinct movieid) from norm_movie group by genres;
+6. select movieid, title from movies where movieid in(select movieid from ratings group by movieid having avg(rating) > (select avg(rating) from ratings where movieid in(select movieid from movies where genres ilike '%Comedy%')) ) and genres ilike '%Children%';
