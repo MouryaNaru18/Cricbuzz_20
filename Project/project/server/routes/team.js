@@ -3,9 +3,6 @@ const pool = require("../db");
 
 router.get("/", async(req, res) => {
     try{
-        // res.json(req.user);
-        // console.log(req.query);
-        // const {teamId} = req.params;
         const user = await pool.query("SELECT * FROM team");
         res.json(user.rows);
     }catch(err){

@@ -1,4 +1,5 @@
 import React, { Component, useEffect, useRef, useState } from 'react';
+import { Link, Route, useParams} from 'react-router-dom';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -25,15 +26,18 @@ ChartJS.register(
 // Take fall of wickets query and increase accuracy of points plotted
 // integrate wicket points with normal points 
 // Double wicket points stacked 
-const ScoreChart = ({ matchId }) => {
+const ScoreChart = () => {
+  const {id} = useParams();
+  const matchId = id;
+  
   // const chartRef = useRef(null);
   const [team1, setTeam1] = useState([]);
   const [team2, setTeam2] = useState([]);
+  const [batt1, setBatt1] = useState("");
+  const [batt2, setBatt2] = useState("");
 
   const [wickets1, setWickets1] = useState([]);
   const [wickets2, setWickets2] = useState([]);
-
-
 
   const [teamIds, setTeamIds] = useState({});
   const [matchDesc, setMatchDesc] = useState({});
@@ -57,7 +61,38 @@ const ScoreChart = ({ matchId }) => {
       console.error(error.message);
     }
   }
+  
+  async function getTeam1(matchId) {
+    try {
+      const res = await fetch(
+        `http://localhost:5000/matches/${matchId}/team/1`,
+        {
+          method: "GET",
+        }
+      );
+      const todoArray = await res.json();
+      // console.log(todoArray)
+      setBatt1(todoArray.team_name);
+    } catch (error) {
+      console.log(error, "reached");
+      console.error(error.message);
+    }
+  }
 
+  async function getTeam2(matchId) {
+    try {
+      const res = await fetch(
+        `http://localhost:5000/matches/${matchId}/team/2`,
+        {
+          method: "GET",
+        }
+      );
+      const todoArray = await res.json();
+      setBatt2(todoArray.team_name);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 
   async function wickets(matchId) {
     try {
@@ -88,7 +123,6 @@ const ScoreChart = ({ matchId }) => {
   }
 
   async function matches(matchId) {
-    // console.log(pageNo);
     try {
         const res = await fetch(
             `http://localhost:5000/matches/${matchId}`,
@@ -99,7 +133,6 @@ const ScoreChart = ({ matchId }) => {
         );
         const todoArray = await res.json();
         setMatchDesc(todoArray);
-        // return todoArray;
     } catch (error) {
         console.error(error.message);
     }
@@ -114,7 +147,6 @@ const ScoreChart = ({ matchId }) => {
         }
       );
       const parseRes = await res.json();
-      // console.log(parseRes);
       const tmp1 = [];
       const tmp2 = [];
       for (let i = 0; i < parseRes.length; i++) {
@@ -142,9 +174,10 @@ const ScoreChart = ({ matchId }) => {
   }
   useEffect(() => { scores(matchId) }, [matchId]);
   useEffect(() => { wickets(matchId) }, [matchId]);
+  useEffect(() => { getTeam1(matchId) }, [matchId]);
+  useEffect(() => { getTeam2(matchId) }, [matchId]);
   
   useEffect(() => { teams() }, []);
-  useEffect(() => { matches(matchId) }, [matchId]);
   
 
   const overs = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
@@ -157,33 +190,14 @@ const ScoreChart = ({ matchId }) => {
   for (let i = 0; i < wickets2.length; i++) {
     f_wickets2[i] = { x: wickets2[i], y: team2[parseInt(wickets2[i]) - 1] };
   }
-  var bat1, bat2;
-  if(matchDesc.toss_name === "bat"){
-    if(matchDesc.toss_winner === matchDesc.team1){
-      bat1 = teamIds[matchDesc.team1];
-      bat2 = teamIds[matchDesc.team2];
-    }
-    else{
-      bat1 = teamIds[matchDesc.team2];
-      bat2 = teamIds[matchDesc.team1];
-    }
-  }
-  else{
-    if(matchDesc.toss_winner === matchDesc.team1){
-      bat1 = teamIds[matchDesc.team2];
-      bat2 = teamIds[matchDesc.team1];
-    }
-    else{
-      bat1 = teamIds[matchDesc.team1];
-      bat2 = teamIds[matchDesc.team2];
-    }
-  }
+  useEffect(() => { matches(matchId) }, [matchId]);
+  
   
   const data1 = {
     labels: overs,
     datasets: [
       {
-        label: bat1,
+        label: batt1,
         data: [0, ...team1],
         borderColor: 'red',
         borderWidth: 2,
@@ -198,7 +212,7 @@ const ScoreChart = ({ matchId }) => {
     labels: overs,
     datasets: [
       {
-        label: bat2,
+        label: batt2,
         data: [0, ...team2],
         borderColor: 'blue',
         borderWidth: 2,
@@ -290,11 +304,13 @@ const ScoreChart = ({ matchId }) => {
       }
     }
   };
+  
   const wTeam = teamIds[matchDesc.match_winner];
   const wMargin = matchDesc.win_margin;
   const wType = matchDesc.win_type;
   return (
-    <div className='mt-5 pt-5'>
+    <div className='mt-3 pt-3'>
+      <h4 className='mt-2'>Comparision Chart</h4>
       <Line data={combinedData} options={options} />
       <h3 className="mx-auto my-3">{wTeam} won by {wMargin} {wType}</h3>
       {/* <Line data={data2} /> */}

@@ -152,10 +152,24 @@ function PlayerProf() {
         grid: {
           display: false
         },
+        title: {
+          display: true,
+          text: "Runs",
+          font: {
+            size: 10
+          },
+        },
       },
       x:{
         grid: {
           display: false
+        },
+        title: {
+          display: true,
+          text: "Match ID",
+          font: {
+            size: 10
+          },
         },
       }
     },
@@ -167,6 +181,13 @@ function PlayerProf() {
         grid: {
           display: false
         },
+        title: {
+          display: true,
+          text: "Match ID",
+          font: {
+            size: 10
+          },
+        },
       },
       y: {
         type: 'linear',
@@ -176,9 +197,9 @@ function PlayerProf() {
         
         title: {
           display: true,
-          text: "Line Dataset",
+          text: "Wickets",
           font: {
-            size: 17
+            size: 10
           },
         },
         grid: {
@@ -193,9 +214,9 @@ function PlayerProf() {
         position: 'right',
         title: {
           display: true,
-          text: "Bar Dataset",
+          text: "Runs Given",
           font: {
-            size: 15
+            size: 10
           },
         },
         grid: {

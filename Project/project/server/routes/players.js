@@ -46,7 +46,7 @@ router.get("/bat/:id", async(req, res) => {
             "bat_avg": (sr.rows[0].sum/n_outs.rows[0].count),
             "match_stats_bat": match_stats_bat.rows
         }
-        console.log(prof);
+        // console.log(prof);
         res.json(prof);
     }catch(err){
         console.error(err.message);

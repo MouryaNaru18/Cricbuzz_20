@@ -12,18 +12,28 @@ import MatchCentre from './components/MatchCentre';
 import PlayerProf from './components/PlayerProf';
 import Venues from './components/Venues';
 import VenueStats from './components/VenueStats';
+import Pointstable from './components/PointsTable';
+import ScoreCard from './components/ScoreCard';
+import ScoreChart from './components/ScoreChart';
+import Summary from './components/Summary';
+import NavBar from './components/NavBar';
 
 function App() {
   return (
     <div className="App">
+      <NavBar />
       <Router>
         <div className="container">
         <Routes>
-          <Route path="/matches" element = {<Matches />} />
-          <Route path="/matches/:id" element = {<MatchCentre/>} />
-          <Route path="/players/:id" element = {<PlayerProf/>} />
-          <Route path="/venues" element = {<Venues/>} />
-          <Route path="/venues/:id" element = {<VenueStats/>} />
+          <Route exact path="/matches" element = {<Matches />} />
+          <Route exact path="/matches/:id" element = {<MatchCentre/>} />
+          <Route exact path="/players/:id" element = {<PlayerProf/>} />
+          <Route exact path="/venues" element = {<Venues/>} />
+          <Route exact path="/venues/:id" element = {<VenueStats/>} />
+          <Route exact path="/pointstable/:season_year" element = {<Pointstable/>} />
+          <Route path={`/scorechart/:id`} element = {<ScoreChart/>} />
+          <Route path={`/scorecard/:id`} element = {<ScoreCard/>} />
+          <Route path={`/summary/:id`} element = {<Summary/>} />
         </Routes>
         </div>
       </Router>

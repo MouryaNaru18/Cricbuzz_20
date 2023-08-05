@@ -40,4 +40,18 @@ router.get("/:id", async(req, res) => {
         res.status(500).json("Server Error");
     }
 })
+
+router.post("/", async(req, res) => {
+    try{
+        // console.log(req.body);
+        ({venueName, cityName, countryName, capacity} = req.body);
+        capacity = parseInt(capacity.trim());
+        const user = await pool.query("INSERT INTO venue(venue_name, city_name, country_name, capacity) VALUES($1, $2, $3, $4)", [venueName, cityName, countryName, capacity]);
+        res.json("Venue Inserted");
+    }catch(err){
+        console.error(err.message);
+        res.status(500).json("Server Error");
+    }
+})
+
 module.exports = router;
