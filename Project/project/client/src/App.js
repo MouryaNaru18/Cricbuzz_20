@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 import './App.css';
 import Matches from './components/Matches';
-import MatchCentre from './components/MatchCentre';
 import PlayerProf from './components/PlayerProf';
 import Venues from './components/Venues';
 import VenueStats from './components/VenueStats';
@@ -26,7 +25,6 @@ function App() {
         <div className="container">
         <Routes>
           <Route exact path="/matches" element = {<Matches />} />
-          <Route exact path="/matches/:id" element = {<MatchCentre/>} />
           <Route exact path="/players/:id" element = {<PlayerProf/>} />
           <Route exact path="/venues" element = {<Venues/>} />
           <Route exact path="/venues/:id" element = {<VenueStats/>} />

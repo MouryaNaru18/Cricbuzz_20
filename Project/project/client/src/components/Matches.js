@@ -96,7 +96,7 @@ function Matches() {
                         <div className="card-body">
                             <p className="card-text">{std}, {city}, {year}</p>
                             <div className='md-4'>
-                                <Link to={`/matches/${mId}`} className="btn btn-primary">Match Center</Link>
+                                <Link to={`/scorecard/${mId}`} className="btn btn-primary">Match Center</Link>
                             </div>
                         </div>
                             <h6 className="card-footer">{wTeam} won by {wMargin} {wType}</h6>

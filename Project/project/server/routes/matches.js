@@ -124,5 +124,15 @@ router.get("/:id/summary/:innings", async(req, res) => {
         res.status(500).json("Server Error");
     }
 })
+router.get("/:id/runs/:innings", async(req, res) => {
+    try{
+        const { id, innings } = req.params;
+        const user1 = await pool.query(`SELECT SUM(CASE WHEN runs_scored = 1 THEN 1 ELSE 0 END) AS ones, SUM(CASE WHEN runs_scored = 2 THEN 2 ELSE 0 END) AS twos, SUM(CASE WHEN runs_scored = 4 THEN 4 ELSE 0 END) AS fours, SUM(CASE WHEN runs_scored =  6 THEN 6 ELSE 0 END) AS sixes, SUM(extra_runs) AS extras  FROM ball_by_ball WHERE match_id = $1 AND innings_no = $2`, [id, innings]);
+        res.json(user1.rows[0]);
+    }catch(err){
+        console.error(err.message);
+        res.status(500).json("Server Error");
+    }
+})
 
 module.exports = router;

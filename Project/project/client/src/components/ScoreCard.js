@@ -13,6 +13,9 @@ function ScoreCard() {
 
   const [team2, setTeam2] = useState({});
   const [team1, setTeam1] = useState({});
+  
+  const [eleven2, setEleven2] = useState([]);
+  const [eleven1, setEleven1] = useState([]);
 
   const [details, setDetails] = useState({});
   const [umpires, setUmpires] = useState([]);
@@ -129,7 +132,7 @@ function ScoreCard() {
         }
       );
       const todoArray = await res.json();
-      console.log(todoArray);
+      // console.log(todoArray);
       setUmpires(todoArray);
     } catch (error) {
       console.error(error.message);
@@ -167,9 +170,42 @@ function ScoreCard() {
       console.error(error.message);
     }
   }
+  async function getEleven1(matchId) {
+    try {
+      console.log(id);
+      const res = await fetch(
+        `http://localhost:5000/team/1/match/${matchId}`,
+        {
+          method: "GET",
+        }
+      );
+      const todoArray = await res.json();
+      setEleven1(todoArray);
+    } catch (error) {
+      console.log(error, "reached");
+      console.error(error.message);
+    }
+  }
+
+  async function getEleven2(matchId) {
+    try {
+      const res = await fetch(
+        `http://localhost:5000/team/2/match/${matchId}`,
+        {
+          method: "GET",
+        }
+      );
+      const todoArray = await res.json();
+      setEleven2(todoArray);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 
   useEffect(() => {
     matches(id);
+  })
+  useEffect(() => {
     teams();
     venue();
     bowling1(id);
@@ -178,12 +214,34 @@ function ScoreCard() {
     batting2(id);
     getTeam1(id);
     getTeam2(id);
+    getEleven1(id);
+    getEleven2(id);
     ump(id);
-  }, [id]);
-
+  }, [details, id]);
+  //Playing 11s
   // const vid = parseInt(details.venue_id);
   return (
     <div>
+      <div className='mt-3 pt-3'>
+        <ul class="nav justify-content-center">
+          <li class="nav-item">
+            <Link to={`/matches`} className="nav-link">Matches</Link>
+          </li>
+          <li class="nav-item">
+            <Link to={`/scorechart/${id}`} className="nav-link">Score Chart</Link>
+          </li>
+          <li class="nav-item">
+
+            <Link to={`/scorecard/${id}`} className="nav-link">Score Card</Link>
+
+          </li>
+          <li class="nav-item">
+            <Link to={`/summary/${id}`} className="nav-link">Summary</Link>
+
+          </li>
+        </ul>
+      </div>
+
       <div>
         <h4 className="mt-3">
           Match: {team1.team_name} v/s {team2.team_name} - {details.season_year}
@@ -242,29 +300,29 @@ function ScoreCard() {
               );
             })}
             <tr>
-                  <td>
-                    <b>Extras</b>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td><b>{team1.extras}</b></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>
-                    <b>Total</b>
-                  </td>
-                  <td />
-                  <td/>
-                  <td><b>{parseInt(team1.runs) + parseInt(team1.extras)}/{parseInt(team1.wkts)}</b></td>
-                  <td />
-                  <td />
-                </tr>
+              <td>
+                <b>Extras</b>
+              </td>
+              <td></td>
+              <td></td>
+              <td><b>{team1.extras}</b></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <b>Total</b>
+              </td>
+              <td />
+              <td />
+              <td><b>{parseInt(team1.runs) + parseInt(team1.extras)}/{parseInt(team1.wkts)}</b></td>
+              <td />
+              <td />
+            </tr>
           </tbody>
         </table>
-        
-          
+
+
         <h5>Bowling</h5>
 
         <table className="table table-striped table-bordered my-4">
@@ -348,28 +406,28 @@ function ScoreCard() {
                 </tr>
               );
             })}
-            
+
             <tr>
-                  <td>
-                    <b>Extras</b>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td><b>{team2.extras}</b></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>
-                    <b>Total</b>
-                  </td>
-                  <td />
-                  <td/>
-                  <td><b>{parseInt(team2.runs) + parseInt(team2.extras)}/{parseInt(team2.wkts)}</b></td>
-                  <td />
-                  <td />
-                </tr>
-                
+              <td>
+                <b>Extras</b>
+              </td>
+              <td></td>
+              <td></td>
+              <td><b>{team2.extras}</b></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <b>Total</b>
+              </td>
+              <td />
+              <td />
+              <td><b>{parseInt(team2.runs) + parseInt(team2.extras)}/{parseInt(team2.wkts)}</b></td>
+              <td />
+              <td />
+            </tr>
+
           </tbody>
         </table>
         <h5>Bowling</h5>
@@ -419,7 +477,7 @@ function ScoreCard() {
           })}
         </h6>
       </div>
-            
+
       <div>
         <h6>
           Venues: {venueIds[details.venue_id] ? (
@@ -432,6 +490,18 @@ function ScoreCard() {
             'Venue details not available'
           )}
         </h6>
+      </div>
+      <div className="mt-2">
+        <h6>
+          {team1.team_name}: 
+        </h6>
+        {eleven1.map((player) => {return <span>{player.player_name}&nbsp;</span>})}
+      </div>
+      <div className="mt-2">
+      <h6>
+          {team2.team_name}: 
+        </h6>
+        {eleven2.map((player) => {return <span>{player.player_name}&nbsp;</span>})}
       </div>
 
 

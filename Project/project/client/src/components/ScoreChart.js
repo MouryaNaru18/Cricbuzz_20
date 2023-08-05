@@ -228,25 +228,25 @@ const ScoreChart = () => {
     {
       // label: 'Additional Points',
       data: f_wickets1,
-      pointBackgroundColor: 'white',
+      pointBackgroundColor: 'red',
       pointBorderColor: 'red',
-      pointRadius: 5,
+      pointRadius: 3,
       pointHoverRadius: 5,
       showLine: false,
       borderWidth: 1,
-      fill:true,
+      fill:false,
     },
     ...data2.datasets,
     {
       // label: 'Additional Points',
       data: f_wickets2,
-      pointBackgroundColor: 'white',
+      pointBackgroundColor: 'blue',
       pointBorderColor: 'blue',
-      pointRadius: 5,
+      pointRadius: 3,
       pointHoverRadius: 5,
       showLine: false,
       borderWidth: 1,
-      fill:true,
+      fill:false,
       
     },
     ],
@@ -310,6 +310,26 @@ const ScoreChart = () => {
   const wType = matchDesc.win_type;
   return (
     <div className='mt-3 pt-3'>
+      <div className='mt-3 pt-3'>
+      <ul class="nav justify-content-center">
+      <li class="nav-item">
+            <Link to={`/matches`} className="nav-link">Matches</Link>
+          </li>
+        <li class="nav-item">
+          <Link to={`/scorechart/${id}`} className="nav-link">Score Chart</Link>
+        </li>
+        <li class="nav-item">
+
+          <Link to={`/scorecard/${id}`} className="nav-link">Score Card</Link>
+
+        </li>
+        <li class="nav-item">
+          <Link to={`/summary/${id}`} className="nav-link">Summary</Link>
+
+        </li>
+      </ul>
+    </div>
+    
       <h4 className='mt-2'>Comparision Chart</h4>
       <Line data={combinedData} options={options} />
       <h3 className="mx-auto my-3">{wTeam} won by {wMargin} {wType}</h3>
